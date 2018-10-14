@@ -1,0 +1,13 @@
+name: CashAPI
+main: asutartix\cashapi\CashAPI
+version: "Argon 1.0.01"
+api: [3.0.0,4.0.0]
+load: STARTUP
+author: "아슈타릭스 (github.com/Asutartix)"
+description: AsutartixProject Cash Plugin
+
+permissions:
+ asutartix.admin:
+  default: OP
+ asutartix.user:
+  default: true
