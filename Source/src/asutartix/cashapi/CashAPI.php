@@ -4,9 +4,12 @@ namespace asutartix\cashapi;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
+use pocketmine\utils\Config;
 
 class CashAPI extends PluginBase {
 	static $_instance = null;
+	
+	protected $cash = [];
 	
 	public function onLoad() {
 		self::$_instance = $this;
@@ -17,6 +20,11 @@ class CashAPI extends PluginBase {
 	}
 	
 	public function onEnable() {
+		$this->loadFiles();
+	}
+	
+	public function onDisable() {
+		$this->saveFiles();
 	}
 	
 	public function setCash($player, $amount = 0, callable $call = null) : bool {
@@ -59,5 +67,15 @@ class CashAPI extends PluginBase {
 	public function getCash($player) {
 		if ($player instanceof Player) $player = $player->getName();
 		return $this->cash[$player] ?? 0;
+	}
+	
+	protected function loadFiles() {
+		$this->cash = (new Config($this->getDataFolder()."cash.json", Config::JSON, []))->getAll();
+	}
+	
+	protected function saveFiles(bool $async = false) {
+		$conf = new Config($this->getDataFolder()."cash.json", Config::JSON, []);
+		$conf->setAll($this->cash);
+		$conf->save($async);
 	}
 }
